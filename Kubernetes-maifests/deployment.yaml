@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-app-deployment
+  labels:
+    app: go-web-app
+spec:
+  # serviceAccountName: my-go-app
+  # securityContext:
+  #       {}
+  replicas: 2
+  selector:
+    matchLabels:
+      app: go-web-app
+  template:
+    metadata:
+      labels:
+        app: go-web-app
+    spec:
+      containers:
+      - name: go-web-app
+        # securityContext:
+        #   {}
+        image: vishalsaxena29/my-go-webapp:latest
+        imagePullPolicy: IfNotPresent
+      #   volumeMounts:
+      #   - mountPath: /data
+      #     name: example-volume
+      # volumes:
+      # - name: example-volume
+      #   persistentVolumeClaim:
+      #     claimName: my-pvc      
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+        livenessProbe:
+            httpGet:
+              path: /home
+              port: http
+        readinessProbe:
+            httpGet:
+              path: /home
+              port: http    
+        # resources:
+        #   requests:
+        #     memory: "64Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m
+
+    
+# secrets:
+# scaling:  
